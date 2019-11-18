@@ -5,7 +5,7 @@ Running migration scenario
 --------------------------
 
 Step 1:
-Install Ansible collection_migration tool https://github.com/ansible-community/collection_migration
+Install Ansible [collection_migration tool](https://github.com/ansible-community/collection_migration)
 
 Step 2:
 Run network collection migration scenario
@@ -21,7 +21,7 @@ Sample test
 ```console
 (.venv) collection_migration$ pip install paramiko
 ```
-2) Update inventory file (~/network_collections_migration/inventory) as per your enviornment: https://github.com/ganeshrn/network_collections_migration/blob/master/inventory
+2) Update inventory file [\~/network_collections_migration/inventory](https://github.com/ganeshrn/network_collections_migration/blob/master/inventory) as per your enviornment: 
 
 3) Run test playbook
 ```console
