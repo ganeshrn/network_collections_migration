@@ -23,9 +23,10 @@ Sample test
 ```
 2) Update inventory file [\~/network_collections_migration/inventory](https://github.com/ganeshrn/network_collections_migration/blob/master/inventory) as per your enviornment: 
 
+4) Setup [Ansible devel env](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html#common-environment-setup)
+
 3) Run test playbook
 ```console
-(.venv) collection_migration$ source .cache/releases/devel.git/hacking/env-setup
 (.venv) collection_migration$ cd ~/network_collections_migration/
 (.venv) network_collections_migration$ ansible-playbook cli_test.yml
 (.venv) network_collections_migration$ ansible-playbook command_test.yml
