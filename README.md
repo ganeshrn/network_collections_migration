@@ -19,7 +19,7 @@ Sample test
 -----------
 1) Install paramiko (runtime pre-requisite):
 ```console
-(.venv) collection_migration$ pip install paramiko
+$ pip install paramiko
 ```
 2) Update inventory file [\~/network_collections_migration/inventory](https://github.com/ganeshrn/network_collections_migration/blob/master/inventory) as per your enviornment: 
 
