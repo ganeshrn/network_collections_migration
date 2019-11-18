@@ -28,6 +28,6 @@ Sample test
 3) Run test playbook
 ```console
 $ cd ~/network_collections_migration/
-network_collections_migration$ ansible-playbook cli_test.yml
-network_collections_migration$ ansible-playbook command_test.yml
+$ network_collections_migration$ ansible-playbook cli_test.yml
+$ network_collections_migration$ ansible-playbook command_test.yml
 ```
