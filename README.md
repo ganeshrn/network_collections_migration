@@ -5,7 +5,7 @@ Running migration scenario
 --------------------------
 
 Step 1:
-Install Ansible [collection_migration tool](https://github.com/ansible-community/collection_migration)
+Install Ansible [collection_migration](https://github.com/ansible-community/collection_migration) tool
 
 Step 2:
 Run network collection migration scenario
