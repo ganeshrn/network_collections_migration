@@ -17,13 +17,11 @@ Run network collection migration scenario
 
 Sample test
 -----------
-Runtime pre-requisites:
-
-1) Install paramiko
+1) Install paramiko (runtime pre-requisite):
 ```console
 (.venv) collection_migration$ pip install paramiko
 ```
-2) Update inventory file as per your enviornment https://github.com/ganeshrn/network_collections_migration/blob/master/inventory
+2) Update inventory file (~/network_collections_migration/inventory) as per your enviornment: https://github.com/ganeshrn/network_collections_migration/blob/master/inventory
 
 3) Run test playbook
 ```console
