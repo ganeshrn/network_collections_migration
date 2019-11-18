@@ -27,7 +27,7 @@ Sample test
 
 3) Run test playbook
 ```console
-(.venv) collection_migration$ cd ~/network_collections_migration/
-(.venv) network_collections_migration$ ansible-playbook cli_test.yml
-(.venv) network_collections_migration$ ansible-playbook command_test.yml
+$ cd ~/network_collections_migration/
+network_collections_migration$ ansible-playbook cli_test.yml
+network_collections_migration$ ansible-playbook command_test.yml
 ```
