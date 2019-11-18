@@ -1,0 +1,31 @@
+- debug:
+    msg: cli/basic-no-login.yaml on connection={{ ansible_connection }}
+- name: Setup
+  vyatta.vyos.vyos_banner:
+    banner: pre-login
+    text: 'Junk pre-login banner
+
+      over multiple lines
+
+      '
+    state: present
+- name: remove pre-login
+  register: result
+  vyatta.vyos.vyos_banner:
+    banner: pre-login
+    state: absent
+- debug:
+    msg: '{{ result }}'
+- assert:
+    that:
+    - result.changed == true
+    - '''delete system login banner pre-login'' in result.commands'
+- name: remove pre-login (idempotent)
+  register: result
+  vyatta.vyos.vyos_banner:
+    banner: pre-login
+    state: absent
+- assert:
+    that:
+    - result.changed == false
+    - result.commands | length == 0

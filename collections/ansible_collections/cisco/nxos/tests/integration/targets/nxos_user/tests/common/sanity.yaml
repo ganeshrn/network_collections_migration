@@ -1,0 +1,78 @@
+- debug: msg="START connection={{ ansible_connection }} nxos_user parameter test"
+- debug: msg="Using provider={{ connection.transport }}"
+  when: ansible_connection == "local"
+- set_fact: idem="true"
+- set_fact: idem="false"
+  when: ((platform is search('N7K')) and (imagetag and (imagetag is version_compare('D1',
+    'eq'))))
+- block:
+  - name: Create user
+    register: result
+    cisco.nxos.nxos_user: &id001
+      name: netend
+      configured_password: Hello!23$
+      update_password: on_create
+      roles: network-operator
+      provider: '{{ connection }}'
+      state: present
+  - assert: &id002
+      that:
+      - result.changed == true
+  - block:
+    - name: conf idempotency
+      register: result
+      cisco.nxos.nxos_user: *id001
+    - assert: &id004
+        that:
+        - result.changed == false
+    when: idem
+  - name: Remove user
+    register: result
+    cisco.nxos.nxos_user: &id003
+      name: netend
+      provider: '{{ connection }}'
+      state: absent
+  - assert: *id002
+  - name: remove idempotency
+    register: result
+    cisco.nxos.nxos_user: *id003
+  - assert: *id004
+  - debug: msg="skipping sshkey test as the key needs to be created on the server
+      first"
+  - name: Collection of users
+    register: result
+    cisco.nxos.nxos_user: &id005
+      users:
+      - name: test1
+      - name: test2
+      configured_password: Hello!23$
+      update_password: on_create
+      provider: '{{ connection }}'
+      state: present
+      roles:
+      - network-admin
+      - network-operator
+  - assert: *id002
+  - block:
+    - name: users idempotency
+      register: result
+      cisco.nxos.nxos_user: *id005
+    - assert: *id004
+    when: idem
+  - name: tearDown
+    register: result
+    cisco.nxos.nxos_user: &id006
+      name: ansible
+      purge: true
+      provider: '{{ connection }}'
+  - assert: *id002
+  - name: teardown idempotency
+    register: result
+    cisco.nxos.nxos_user: *id006
+  - assert: *id004
+  always:
+  - name: tearDown
+    register: result
+    ignore_errors: true
+    cisco.nxos.nxos_user: *id006
+- debug: msg="END connection={{ ansible_connection }} nxos_user parameter test"

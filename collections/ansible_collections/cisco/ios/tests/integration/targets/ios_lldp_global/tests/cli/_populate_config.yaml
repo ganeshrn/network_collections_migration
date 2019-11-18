@@ -1,0 +1,13 @@
+- name: Populate Config
+  vars:
+    lines: 'lldp holdtime 10
+
+      lldp run
+
+      lldp timer 100
+
+      lldp reinit 3
+
+      '
+  network.common.cli_config:
+    config: '{{ lines }}'

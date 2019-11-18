@@ -1,0 +1,8 @@
+- name: Populate Config
+  vars:
+    lines: 'lacp system-priority 500
+
+      '
+  when: ansible_net_version != "15.6(2)T"
+  network.common.cli_config:
+    config: '{{ lines }}'

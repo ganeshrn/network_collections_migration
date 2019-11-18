@@ -1,0 +1,48 @@
+- debug:
+    msg: Start nxos_hsrp_interfaces overridden integration tests connection={{ ansible_connection
+      }}
+- set_fact: test_int1="{{ nxos_int1 }}"
+- set_fact: test_int2="{{ nxos_int2 }}"
+- set_fact:
+    bfd_enable: enable
+    bfd_disable: disable
+  when: platform is not search('N35')
+- block:
+  - name: setup1
+    network.common.cli_config: &id002
+      config: 'no feature bfd
+
+        no feature hsrp
+
+        default interface {{ test_int1 }}
+
+        default interface {{ test_int2 }}
+
+        '
+  - name: setup2
+    network.common.cli_config:
+      config: "feature bfd\nfeature hsrp\ninterface {{ test_int1 }}\n  no switchport\n\
+        interface {{ test_int2 }}\n  no switchport\n  hsrp bfd\n"
+  - name: Overridden
+    register: result
+    cisco.nxos.nxos_hsrp_interfaces: &id001
+      config:
+      - name: '{{ test_int1 }}'
+        bfd: '{{ bfd_enable|default(omit)}}'
+      state: overridden
+  - assert:
+      that:
+      - result.changed == true
+      - result.commands[1] == 'no hsrp bfd'
+      - result.commands[3] == 'hsrp bfd'
+      msg: 'Assert failed. ''result.commands'': {{ result.commands }}'
+  - name: Idempotence - Overridden
+    register: result
+    cisco.nxos.nxos_hsrp_interfaces: *id001
+  - assert:
+      that:
+      - result.changed == false
+      - result.commands|length == 0
+  always:
+  - name: teardown
+    network.common.cli_config: *id002

@@ -1,0 +1,25 @@
+- debug: msg="START cli/simple.yaml on connection={{ ansible_connection }}"
+- name: setup
+  vyatta.vyos.vyos_config:
+    lines: set system host-name {{ inventory_hostname_short }}
+    match: none
+- name: configure simple config command
+  register: result
+  vyatta.vyos.vyos_config:
+    lines: set system host-name foo
+- assert:
+    that:
+    - result.changed == true
+    - '''set system host-name foo'' in result.commands'
+- name: check simple config command idempontent
+  register: result
+  vyatta.vyos.vyos_config:
+    lines: set system host-name foo
+- assert:
+    that:
+    - result.changed == false
+- name: teardown
+  vyatta.vyos.vyos_config:
+    lines: set system host-name {{ inventory_hostname_short }}
+    match: none
+- debug: msg="END cli/simple.yaml on connection={{ ansible_connection }}"

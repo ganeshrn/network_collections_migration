@@ -1,0 +1,4 @@
+testcase: '*'
+vrfs:
+- default
+- myvrf

@@ -1,0 +1,7 @@
+- name: Remove Config
+  vars:
+    lines: 'no lldp
+
+      '
+  network.common.cli_config:
+    config: '{{ lines }}'

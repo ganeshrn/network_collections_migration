@@ -1,0 +1,41 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: network.common.network_cli
+  collections:
+  - arista.eos
+  - cisco.ios
+  - cisco.iosxr
+  - juniper.junos
+  - cisco.nxos
+  - vyatta.vyos
+  tasks:
+  - name: show eos version
+    arista.eos.eos_command:
+      commands: show version
+    when: ansible_network_os == 'arista.eos.eos'
+
+  - name: show ios version
+    cisco.ios.ios_command:
+      commands: show version
+    when: ansible_network_os == 'cisco.ios.ios'
+
+  - name: show iosxr version
+    cisco.iosxr.iosxr_command:
+      commands: show version
+    when: ansible_network_os == 'cisco.iosxr.iosxr'
+
+  - name: show junos version
+    juniper.junos.junos_command:
+      commands: show version
+    when: ansible_network_os == 'juniper.junos.junos'
+
+  - name: show nxos version
+    cisco.nxos.nxos_command:
+      commands: show version
+    when: ansible_network_os == 'cisco.nxos.nxos'
+
+  - name: show vyos version
+    vyatta.vyos.vyos_command:
+      commands: show version
+    when: ansible_network_os == 'vyatta.vyos.vyos'

@@ -1,0 +1,6 @@
+- include: cli.yaml
+  tags:
+  - cli
+- include: netconf.yaml
+  tags:
+  - netconf

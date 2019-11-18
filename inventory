@@ -1,0 +1,17 @@
+[eos]
+eos01 ansible_host=changeme ansible_user=changeme ansible_ssh_pass=changeme ansible_network_os=arista.eos.eos
+
+[ios]
+ios01 ansible_host=changeme ansible_user=changeme ansible_ssh_pass=changeme ansible_network_os=cisco.ios.ios
+
+[iosxr]
+iosxr01 ansible_host=changeme ansible_user=changeme ansible_ssh_pass=changeme  ansible_network_os=cisco.iosxr.iosxr
+
+[junos]
+junos01 ansible_host=changeme ansible_user=changeme ansible_ssh_pass=changeme ansible_network_os=juniper.junos.junos
+
+[nxos]
+nxos01 ansible_host=changeme ansible_user=changeme ansible_ssh_pass=changeme ansible_network_os=cisco.nxos.nxos
+
+[vyos]
+vyos01 ansible_host=changeme ansible_user=changeme ansible_ssh_pass=changeme ansible_network_os=vyatta.vyos.vyos

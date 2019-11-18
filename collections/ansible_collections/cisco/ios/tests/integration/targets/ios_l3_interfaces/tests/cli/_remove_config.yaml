@@ -1,0 +1,17 @@
+- name: Remove Config
+  vars:
+    lines: 'interface GigabitEthernet 0/1
+
+      no ip address
+
+      no ipv6 address
+
+      interface GigabitEthernet 0/2
+
+      no ip address
+
+      no ipv6 address
+
+      '
+  network.common.cli_config:
+    config: '{{ lines }}'

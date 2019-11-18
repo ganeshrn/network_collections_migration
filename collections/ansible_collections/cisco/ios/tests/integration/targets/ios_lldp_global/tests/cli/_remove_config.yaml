@@ -1,0 +1,13 @@
+- name: Remove Config
+  vars:
+    lines: 'no lldp holdtime
+
+      no lldp run
+
+      no lldp timer
+
+      no lldp reinit
+
+      '
+  network.common.cli_config:
+    config: '{{ lines }}'

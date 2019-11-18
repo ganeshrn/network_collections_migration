@@ -1,0 +1,16 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: network.common.network_cli
+  collections:
+  - network.common
+  - arista.eos
+  - cisco.ios
+  - cisco.iosxr
+  - juniper.junos
+  - cisco.nxos
+  - vyatta.vyos
+  tasks:
+  - name: show eos version
+    network.common.cli_command:
+      command: show version

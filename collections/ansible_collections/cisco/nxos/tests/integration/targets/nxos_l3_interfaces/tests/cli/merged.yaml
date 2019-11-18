@@ -1,0 +1,48 @@
+- debug:
+    msg: Start nxos_l3_interfaces merged integration tests connection={{ ansible_connection
+      }}
+- set_fact: test_int1="{{ nxos_int1 }}"
+- name: setup1
+  network.common.cli_config: &id002
+    config: 'default interface {{ test_int1 }}
+
+      '
+- block:
+  - name: setup2
+    network.common.cli_config:
+      config: "interface {{ test_int1 }}\n  no switchport\n"
+  - name: Merged
+    register: result
+    cisco.nxos.nxos_l3_interfaces: &id001
+      config:
+      - name: '{{ test_int1 }}'
+        ipv4:
+        - address: 192.168.10.2/24
+      state: merged
+  - assert:
+      that:
+      - result.changed == true
+      - result.before|length == 0
+      - '''interface {{ test_int1 }}'' in result.commands'
+      - '''ip address 192.168.10.2/24'' in result.commands'
+      - result.commands|length == 2
+  - name: Gather l3_interfaces facts
+    cisco.nxos.nxos_facts:
+      gather_subset:
+      - '!all'
+      - '!min'
+      gather_network_resources: l3_interfaces
+  - assert:
+      that:
+      - result.after|length == (ansible_facts.network_resources.l3_interfaces|length
+        - 1)
+  - name: Idempotence - Merged
+    register: result
+    cisco.nxos.nxos_l3_interfaces: *id001
+  - assert:
+      that:
+      - result.changed == false
+      - result.commands|length == 0
+  always:
+  - name: teardown
+    network.common.cli_config: *id002

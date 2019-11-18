@@ -1,0 +1,15 @@
+namespace: juniper
+name: junos
+version: 1.0.0
+readme: null
+authors: null
+description: null
+license: null
+license_file: null
+tags: null
+dependencies:
+  network.common: '>=1.0'
+repository: git@github.com:ansible-collection-migration/juniper.junos.git
+documentation: null
+homepage: null
+issues: null

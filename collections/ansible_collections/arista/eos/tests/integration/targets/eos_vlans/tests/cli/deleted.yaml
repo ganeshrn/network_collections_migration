@@ -1,0 +1,32 @@
+- include_tasks: reset_config.yml
+- set_fact:
+    config:
+    - vlan_id: 20
+- become: true
+  arista.eos.eos_facts:
+    gather_network_resources: vlans
+- name: Returns vlans to default parameters
+  register: result
+  become: true
+  arista.eos.eos_vlans:
+    config: '{{ config }}'
+    state: deleted
+- assert:
+    that:
+    - ansible_facts.network_resources.vlans|symmetric_difference(result.before) ==
+      []
+- become: true
+  arista.eos.eos_facts:
+    gather_network_resources: vlans
+- assert:
+    that:
+    - ansible_facts.network_resources.vlans|symmetric_difference(result.after) ==
+      []
+- set_fact:
+    expected_config:
+    - vlan_id: 10
+      name: ten
+- assert:
+    that:
+    - expected_config|symmetric_difference(ansible_facts.network_resources.vlans)
+      == []

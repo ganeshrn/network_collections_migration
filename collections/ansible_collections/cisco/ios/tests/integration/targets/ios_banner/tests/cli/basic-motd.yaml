@@ -1,0 +1,49 @@
+- name: setup - remove motd
+  cisco.ios.ios_banner:
+    banner: motd
+    state: absent
+    provider: '{{ cli }}'
+- name: Set motd
+  register: result
+  cisco.ios.ios_banner:
+    banner: motd
+    text: 'this is my motd banner
+
+      that has a multiline
+
+      string
+
+      '
+    state: present
+    provider: '{{ cli }}'
+- debug:
+    msg: '{{ result }}'
+- assert:
+    that:
+    - result.changed == true
+    - '''banner motd @
+
+      this is my motd banner
+
+      that has a multiline
+
+      string
+
+      @'' in result.commands'
+- name: Set motd again (idempotent)
+  register: result
+  cisco.ios.ios_banner:
+    banner: motd
+    text: 'this is my motd banner
+
+      that has a multiline
+
+      string
+
+      '
+    state: present
+    provider: '{{ cli }}'
+- assert:
+    that:
+    - result.changed == false
+    - result.commands | length == 0

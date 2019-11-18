@@ -1,0 +1,18 @@
+- name: Reset initial config
+  become: true
+  network.common.cli_config:
+    config: "interface Ethernet1\n   no lldp receive\n   lldp transmit\ninterface\
+      \ Ethernet2\n   lldp receive\n   no lldp transmit\n"
+- become: true
+  arista.eos.eos_facts:
+    gather_network_resources: lldp_interfaces
+- set_fact:
+    expected_config:
+    - name: Ethernet1
+      receive: false
+    - name: Ethernet2
+      transmit: false
+- assert:
+    that:
+    - expected_config|symmetric_difference(ansible_facts.network_resources.lldp_interfaces)
+      == []

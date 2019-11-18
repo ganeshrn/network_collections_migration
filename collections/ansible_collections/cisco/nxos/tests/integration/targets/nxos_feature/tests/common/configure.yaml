@@ -1,0 +1,48 @@
+- debug: msg="START connection={{ ansible_connection }}/configure.yaml"
+- name: setup
+  cisco.nxos.nxos_config:
+    lines: no feature bgp
+    match: none
+    provider: '{{ connection }}'
+- name: enable bgp
+  register: result
+  cisco.nxos.nxos_feature:
+    feature: bgp
+    provider: '{{ connection }}'
+    state: enabled
+- assert:
+    that:
+    - result.changed == true
+- name: verify bgp
+  register: result
+  cisco.nxos.nxos_feature:
+    feature: bgp
+    provider: '{{ connection }}'
+    state: enabled
+- assert:
+    that:
+    - result.changed == false
+- name: disable bgp
+  register: result
+  cisco.nxos.nxos_feature:
+    feature: bgp
+    provider: '{{ connection }}'
+    state: disabled
+- assert:
+    that:
+    - result.changed == true
+- name: verify bgp
+  register: result
+  cisco.nxos.nxos_feature:
+    feature: bgp
+    provider: '{{ connection }}'
+    state: disabled
+- assert:
+    that:
+    - result.changed == false
+- name: teardown
+  cisco.nxos.nxos_config:
+    lines: no feature bgp
+    match: none
+    provider: '{{ connection }}'
+- debug: msg="END connection={{ ansible_connection }}/configure.yaml"

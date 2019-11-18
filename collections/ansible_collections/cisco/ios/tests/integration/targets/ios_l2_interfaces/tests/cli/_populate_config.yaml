@@ -1,0 +1,20 @@
+- name: Populate Config
+  vars:
+    lines: 'interface GigabitEthernet 0/1
+
+      switchport access vlan 10
+
+      interface GigabitEthernet 0/2
+
+      switchport trunk encapsulation dot1q
+
+      switchport trunk native vlan 10
+
+      switchport trunk allowed vlan 10-20,40
+
+      switchport trunk pruning vlan 10,20
+
+      '
+  when: ansible_net_version != "15.6(2)T"
+  network.common.cli_config:
+    config: '{{ lines }}'

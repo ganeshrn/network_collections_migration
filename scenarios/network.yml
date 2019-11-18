@@ -1,0 +1,30 @@
+common:
+  module_utils:
+  - network/common/*
+  - network/common/*/*
+  - network/netconf/*
+  - network/restconf/*
+  modules:
+  - network/cli/*
+  - network/netconf/*
+  - network/restconf/*
+  action:
+  - cli_command.py
+  - cli_config.py
+  - net_get.py
+  - net_put.py
+  - netconf.py
+  - network.py
+  connection:
+  - httpapi.py
+  - napalm.py
+  - netconf.py
+  - network_cli.py
+  doc_fragments:
+  - netconf.py
+  filter:
+  - network.py
+  httpapi:
+  - restconf.py
+  netconf:
+  - default.py

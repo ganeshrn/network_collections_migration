@@ -1,0 +1,55 @@
+ios:
+  module_utils:
+  - network/ios/*
+  - network/ios/*/*
+  - network/ios/*/*/*
+  - network/ios/*/*/*/*
+  - network/ios/*/*/*/*/*
+  modules:
+  - network/ios/*
+  action:
+  - ios.py
+  cliconf:
+  - ios.py
+  doc_fragments:
+  - ios.py
+  terminal:
+  - ios.py
+
+iosxr:
+  module_utils:
+  - network/iosxr/*
+  - network/iosxr/*/*
+  - network/iosxr/*/*/*
+  - network/iosxr/*/*/*/*
+  - network/iosxr/*/*/*/*/*
+  modules:
+  - network/iosxr/*
+  action:
+  - iosxr.py
+  cliconf:
+  - iosxr.py
+  doc_fragments:
+  - iosxr.py
+  netconf:
+  - iosxr.py
+  terminal:
+  - iosxr.py
+
+nxos:
+  module_utils:
+  - network/nxos/*
+  - network/nxos/*/*
+  - network/nxos/*/*/*
+  modules:
+  - network/nxos/*
+  action:
+  - nxos.py
+  cliconf:
+  - nxos.py
+  doc_fragments:
+  - nxos.py
+  httpapi:
+  - nxos.py
+  terminal:
+  - nxos.py

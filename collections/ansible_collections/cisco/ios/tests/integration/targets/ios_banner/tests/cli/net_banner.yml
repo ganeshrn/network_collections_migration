@@ -1,0 +1,27 @@
+- debug: msg="START ios cli/net_banner.yaml on connection={{ ansible_connection }}"
+- name: setup - remove login
+  net_banner:
+    banner: login
+    state: absent
+    authorize: true
+- name: Set login
+  net_banner:
+    banner: login
+    text: this is my login banner confgiured by net_banner
+    state: present
+    authorize: true
+  register: result
+- assert:
+    that:
+    - result.changed == true
+    - '''banner login @
+
+      this is my login banner confgiured by net_banner
+
+      @'' in result.commands'
+- name: teardown - remove login
+  net_banner:
+    banner: login
+    state: absent
+    authorize: true
+- debug: msg="END ios cli/net_banner.yaml on connection={{ ansible_connection }}"

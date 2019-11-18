@@ -1,0 +1,5 @@
+- name: run junos_command to check netconf connectivity
+  register: result
+  ignore_errors: '{{ is_ignore_errors }}'
+  juniper.junos.junos_command:
+    rpcs: get-software-information

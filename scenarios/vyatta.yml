@@ -1,0 +1,15 @@
+vyos:
+  module_utils:
+  - network/vyos/*
+  - network/vyos/*/*
+  - network/vyos/*/*/*
+  modules:
+  - network/vyos/*
+  action:
+  - vyos.py
+  cliconf:
+  - vyos.py
+  doc_fragments:
+  - vyos.py
+  terminal:
+  - vyos.py

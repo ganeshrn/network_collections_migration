@@ -1,0 +1,45 @@
+- debug: msg="START connection={{ ansible_connection }} nxos_ospf sanity test"
+- debug: msg="Using provider={{ connection.transport }}"
+  when: ansible_connection == "local"
+- name: Enable feature OSPF
+  ignore_errors: true
+  cisco.nxos.nxos_feature:
+    feature: ospf
+    provider: '{{ connection }}'
+    state: enabled
+- block:
+  - name: Configure ospf
+    register: result
+    cisco.nxos.nxos_ospf: &id001
+      ospf: 1
+      provider: '{{ connection }}'
+      state: present
+  - assert: &id002
+      that:
+      - result.changed == true
+  - name: Check Idempotence
+    register: result
+    cisco.nxos.nxos_ospf: *id001
+  - assert: &id004
+      that:
+      - result.changed == false
+  rescue:
+  - name: Disable feature OSPF
+    ignore_errors: true
+    cisco.nxos.nxos_feature:
+      feature: ospf
+      provider: '{{ connection }}'
+      state: disabled
+  always:
+  - name: Unconfigure ospf
+    register: result
+    cisco.nxos.nxos_ospf: &id003
+      ospf: 1
+      provider: '{{ connection }}'
+      state: absent
+  - assert: *id002
+  - name: Check Idempotence
+    register: result
+    cisco.nxos.nxos_ospf: *id003
+  - assert: *id004
+  - debug: msg="END connection={{ ansible_connection }} nxos_ospf sanity test"

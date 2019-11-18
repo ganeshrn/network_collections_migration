@@ -1,0 +1,32 @@
+- debug: msg="START connection={{ ansible_connection }}/set_hostname.yaml"
+- debug: msg="Using provider={{ connection.transport }}"
+  when: ansible_connection == "local"
+- block:
+  - name: setup
+    cisco.nxos.nxos_config:
+      lines: hostname switch
+      match: none
+      provider: '{{ connection }}'
+  - name: configure hostname
+    register: result
+    cisco.nxos.nxos_system:
+      hostname: foo
+      provider: '{{ connection }}'
+  - assert:
+      that:
+      - result.changed == true
+  - name: verify hostname
+    register: result
+    cisco.nxos.nxos_system:
+      hostname: foo
+      provider: '{{ connection }}'
+  - assert:
+      that:
+      - result.changed == false
+  always:
+  - name: teardown
+    cisco.nxos.nxos_config:
+      lines: hostname switch
+      match: none
+      provider: '{{ connection }}'
+  - debug: msg="END connection={{ ansible_connection }}/set_hostname.yaml"

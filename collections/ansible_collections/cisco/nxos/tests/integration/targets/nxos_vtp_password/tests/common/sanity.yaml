@@ -1,0 +1,56 @@
+- debug: msg="START connection={{ ansible_connection }} nxos_vtp_password sanity test"
+- debug: msg="Using provider={{ connection.transport }}"
+  when: ansible_connection == "local"
+- set_fact: vtp_run="true"
+- set_fact: vtp_run="false"
+  when: platform is search('N3K-F|N9K-F')
+- block:
+  - name: disable feature vtp
+    ignore_errors: true
+    cisco.nxos.nxos_feature:
+      feature: vtp
+      provider: '{{ connection }}'
+      state: disabled
+  - name: enable feature vtp
+    cisco.nxos.nxos_feature:
+      feature: vtp
+      provider: '{{ connection }}'
+      state: enabled
+  - name: configure vtp domain
+    cisco.nxos.nxos_vtp_domain:
+      domain: testing
+      provider: '{{ connection }}'
+  - name: configure vtp password
+    register: result
+    cisco.nxos.nxos_vtp_password: &id001
+      vtp_password: ntc
+      provider: '{{ connection }}'
+      state: present
+  - assert: &id002
+      that:
+      - result.changed == true
+  - name: Conf Idempotence
+    register: result
+    cisco.nxos.nxos_vtp_password: *id001
+  - assert: &id004
+      that:
+      - result.changed == false
+  - name: remove vtp password
+    register: result
+    cisco.nxos.nxos_vtp_password: &id003
+      vtp_password: ntc
+      provider: '{{ connection }}'
+      state: absent
+  - assert: *id002
+  - name: Remove Idempotence
+    register: result
+    cisco.nxos.nxos_vtp_password: *id003
+  - assert: *id004
+  when: vtp_run
+  always:
+  - name: disable feature vtp
+    cisco.nxos.nxos_feature:
+      feature: vtp
+      provider: '{{ connection }}'
+      state: disabled
+- debug: msg="END connection={{ ansible_connection }} nxos_vtp_password sanity test"
